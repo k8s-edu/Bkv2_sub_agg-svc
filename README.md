@@ -11,9 +11,9 @@
 ## 컨테이너 이미지 빌드 방법
 ```shell
 # 로그 데이터 확인을 위한 샘플 애플리케이션 빌드
-docker buildx build --platform linux/amd64 -f .\Dockerfile.log -t seongjumoon/aggregate-service:log . --push
+docker buildx build --platform linux/amd64,linux/arm64 -f .\Dockerfile.log -t seongjumoon/aggregate-service:log . --push
 # 트레이스 데이터 확인을 위한 샘플 애플리케이션 빌드
-docker buildx build --platform linux/amd64 -f .\Dockerfile.trace -t seongjumoon/aggregate-service:trace . --push
+docker buildx build --platform linux/amd64,linux/arm64 -f .\Dockerfile.trace -t seongjumoon/aggregate-service:trace . --push
 # 프로파일 데이터 확인을 위한 샘플 애플리케이션 빌드
-docker buildx build --platform linux/amd64 -f .\Dockerfile.profile -t seongjumoon/aggregate-service:profile . --push
+docker buildx build --platform linux/amd64,linux/arm64 -f .\Dockerfile.profile -t seongjumoon/aggregate-service:profile . --push
 ```
