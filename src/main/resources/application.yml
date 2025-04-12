@@ -9,9 +9,7 @@ springdoc:
   api-docs:
     path: /api-docs
 logging:
-  structured:
-    format:
-      console: ecs
+  config: classpath:logback-spring.xml
 management:
   endpoints:
     web:

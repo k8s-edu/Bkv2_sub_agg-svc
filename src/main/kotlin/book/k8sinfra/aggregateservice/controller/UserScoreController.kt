@@ -55,6 +55,9 @@ class ScoreController(private val userScoreService: UserScoreService) {
             logger.info("User score by user ID: $userId not found, creating new score to ${scoreRequest.score}")
             userScoreService.saveUserScore(userId, scoreRequest.score)
         }
+        val miliseconds = (1000..3000).random().toLong()
+        Thread.sleep(miliseconds)
+        logger.warn("The request is take too long to process")
         return UpdateScoreResponse(status = HttpStatus.OK.value(), message = "success", score = savedScore)
     }
 
