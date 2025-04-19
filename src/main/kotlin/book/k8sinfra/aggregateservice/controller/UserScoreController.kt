@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 
 @RestController
 @RequestMapping("api/v1/score")
@@ -56,10 +59,25 @@ class ScoreController(private val userScoreService: UserScoreService) {
             userScoreService.saveUserScore(userId, scoreRequest.score)
         }
         val miliseconds = (1000..3000).random().toLong()
-        Thread.sleep(miliseconds)
-        logger.warn("The request is take too long to process")
+        simulateCpuLoadWithHmac(miliseconds)
+        logger.warn("This request was processed abnormally")
         return UpdateScoreResponse(status = HttpStatus.OK.value(), message = "success", score = savedScore)
     }
+
+    fun simulateCpuLoadWithHmac(durationMillis: Long) {
+        val start = System.currentTimeMillis()
+        val secret = "verySecretKey".toByteArray()
+        val data = UUID.randomUUID().toString().toByteArray()
+
+        val hmacSha256 = Mac.getInstance("HmacSHA256")
+        hmacSha256.init(SecretKeySpec(secret, "HmacSHA256"))
+
+        var iterations = 0
+        while (System.currentTimeMillis() - start < durationMillis) {
+            val hash = hmacSha256.doFinal(data)
+            iterations++
+        }
+}
 
     @Schema(description = "Request body for upserting a score", example = """{"score": 100}""")
     data class UpdateScoreRequest(
